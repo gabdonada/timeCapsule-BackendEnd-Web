@@ -12,6 +12,22 @@ datasource db {
 
 //Creating table user
 model User {
-  id   String @id @default(uuid()) //@id makes it PK and @default will generate a UUID
-  name String
+  id        String @id @default(uuid()) //@id makes it PK and @default will generate a UUID
+  githubId  Int    @unique
+  name      String
+  login     String
+  avatarUrl String
+
+  memories Memory[] //a user can have n memories - This is only a relationship
+}
+
+model Memory {
+  id        String   @id @default(uuid())
+  userId    String
+  coverUrl  String
+  content   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id]) //a memory has only one user - This is only a relationship
 }
